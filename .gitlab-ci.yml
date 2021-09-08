@@ -1,6 +1,6 @@
 include:
   - project: 'notno/ci-templates'
-    file: 'templates/python-docker.yml'
+    file: 'templates/python.yml'
     ref: 'beta'
 
 variables:
