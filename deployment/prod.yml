@@ -1,0 +1,12 @@
+version: '3.8'
+
+services:
+  netflow:
+    image: registry.gitlab.com/notno/network-data-producer:0.1.0
+    env_file:
+      - config.env
+      
+  dns:
+    image: registry.gitlab.com/notno/network-data-producer:0.1.0
+    env_file:
+      - config.env

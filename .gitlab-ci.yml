@@ -1,0 +1,7 @@
+include:
+  - project: 'notno/ci-templates'
+    file: 'templates/python-docker.yml'
+    ref: 'beta'
+
+variables:
+  PYTHON_PACKAGE: ned

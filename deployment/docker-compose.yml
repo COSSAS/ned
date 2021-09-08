@@ -1,0 +1,8 @@
+version: '3.8'
+
+services:
+  netflow:
+    command: "ndp-netflow"
+      
+  dns:
+    command: "ndp-dns"

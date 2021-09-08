@@ -1,0 +1,3 @@
+[submodule "compose-recipes"]
+	path = compose-recipes
+	url = git@gitlab.com:notno/compose-recipes.git
