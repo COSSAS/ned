@@ -56,4 +56,4 @@ def ship_records_to_elastic(
 
 def compute_id(record: Record) -> str:
     concatenated_string = record.src_ip + record.dest_ip + str(record.timestamp)
-    return hashlib.md5(bytes(concatenated_string, "utf-8")).hexdigest()  # md5
+    return hashlib.md5(bytes(concatenated_string, "utf-8")).hexdigest()  # nosec
