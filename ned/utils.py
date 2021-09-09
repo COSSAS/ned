@@ -1,11 +1,12 @@
 import logging
-from ned.type.record import Record
 import os
 from dataclasses import asdict, dataclass
 from pprint import pformat
 from typing import List
 
 import dateutil.parser as dp
+
+from ned.type.record import Record
 
 
 @dataclass
@@ -21,7 +22,7 @@ class Config:
     LOG_LEVEL: str = "WARN"
     from_env: bool = True
 
-    def __post_init__(self):
+    def __post_init__(self) -> None:
         """
         parameters are loaded with the following priority:
         1. from environment variables
@@ -40,9 +41,9 @@ class Config:
         self.ES_PASSWORD = os.environ.get("ES_PASSWORD", self.ES_PASSWORD)
         self.TYPE_RECORDS = os.environ.get("TYPE_RECORDS", self.TYPE_RECORDS)
         self.AMOUNT_RECORDS = int(os.environ.get("AMOUNT_RECORDS", self.AMOUNT_RECORDS))
-        self.AMOUNT_ANOMALIES = int(os.environ.get(
-            "AMOUNT_ANOMALIES", self.AMOUNT_ANOMALIES
-        ))
+        self.AMOUNT_ANOMALIES = int(
+            os.environ.get("AMOUNT_ANOMALIES", self.AMOUNT_ANOMALIES)
+        )
         self.LOG_LEVEL = os.environ.get("LOG_LEVEL", self.LOG_LEVEL)
 
 

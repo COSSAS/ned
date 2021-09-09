@@ -4,7 +4,8 @@ import sys
 from datetime import datetime, time, timedelta, timezone
 from typing import List, Tuple
 
-from ned.type.netflow import NetflowRecord
+from ned.type.netflow import NetflowRecord, suricata_template_netflow
+from ned.type.record import Record
 
 
 class Producer:
@@ -29,10 +30,10 @@ class Producer:
             "192.168.0.5",
         ]
 
-    def pick_source_ip(self):
+    def pick_source_ip(self) -> str:
         return random.choice(self.hosts_subnet1)
 
-    def pick_destination_ip(self, src_ip: str, anomalous=False):
+    def pick_destination_ip(self, src_ip: str, anomalous: bool = False) -> str:
         if anomalous:
             # anomalous = to another subnet
             return random.choice(self.hosts_subnet2)
@@ -41,7 +42,7 @@ class Producer:
         destinations.remove(src_ip)
         return random.choice(destinations)
 
-    def produce_one(self, anomalous=False):
+    def produce_one(self, anomalous: bool = False) -> Record:
         src_ip = self.pick_source_ip()
         dest_ip = self.pick_destination_ip(src_ip=src_ip, anomalous=anomalous)
         if self.type == "netflow":
@@ -51,17 +52,19 @@ class Producer:
                 dest_ip=dest_ip,
                 timestamp=datetime.now(timezone.utc).astimezone()
                 + timedelta(seconds=self.counter),
-                
+                suricata=suricata_template_netflow.copy(),
             )
         self.counter += 1
         return record
 
-    def produce_many(self, amount: int = 10000, anomalous: bool = False):
+    def produce_many(
+        self, amount: int = 10000, anomalous: bool = False
+    ) -> List[Record]:
         return [self.produce_one(anomalous=anomalous) for _ in range(amount)]
 
     def produce(
         self, amount: int, amount_anomalous: int = 0
-    ) -> Tuple[List[NetflowRecord], List[NetflowRecord]]:
+    ) -> Tuple[List[Record], List[Record]]:
         benign_records = self.produce_many(amount=amount)
         anomalous_records = self.produce_many(amount=amount_anomalous, anomalous=True)
         return benign_records, anomalous_records

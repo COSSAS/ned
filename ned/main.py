@@ -6,7 +6,7 @@ from ned.producer import Producer
 from ned.utils import Config, log_records_timestamps
 
 
-def main(type: str, config: Config, to_elastic: bool = False):
+def main(type: str, config: Config, to_elastic: bool = False) -> None:
     producer = Producer(type=type)
     benign_records, anomalous_records = producer.produce(
         amount=config.AMOUNT_RECORDS, amount_anomalous=config.AMOUNT_ANOMALIES

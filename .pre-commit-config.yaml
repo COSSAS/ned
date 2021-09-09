@@ -31,6 +31,6 @@ repos:
     hooks:
     -   id: system
         name: mypy
-        entry: poetry run mypy --strict --ignore-missing-imports --show-error-context eeland
+        entry: poetry run mypy --strict --ignore-missing-imports --show-error-context ned
         pass_filenames: false
         language: system

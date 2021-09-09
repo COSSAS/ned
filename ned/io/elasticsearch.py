@@ -6,11 +6,17 @@ from pprint import pformat
 from typing import List
 
 import elasticsearch
+from elasticsearch import Elasticsearch
+
+from ned.type.record import Record
 
 
 def connect_to_elastic(
-    es_host="localhost", es_port=9200, es_user=None, es_password=None
-):
+    es_host: str = "localhost",
+    es_port: str = "9200",
+    es_user: str = "",
+    es_password: str = "",
+) -> elasticsearch.Elasticsearch:
     connected = False
     while not connected:
         try:
@@ -34,7 +40,7 @@ def connect_to_elastic(
 
 
 def ship_records_to_elastic(
-    index: str, es_client: elasticsearch.Elasticsearch, records: List
+    index: str, es_client: elasticsearch.Elasticsearch, records: List[Record]
 ) -> None:
     es_client.indices.create(index=index, ignore=400)
     for record in records:
@@ -48,8 +54,6 @@ def ship_records_to_elastic(
         logging.info("%s %s", record_id, pformat(record.suricata))
 
 
-def compute_id(record) -> str:
-    concatenated_string = (
-        str(record.flow_id) + record.src_ip + record.dest_ip + str(record.timestamp)
-    )
+def compute_id(record: Record) -> str:
+    concatenated_string = record.src_ip + record.dest_ip + str(record.timestamp)
     return hashlib.md5(bytes(concatenated_string, "utf-8")).hexdigest()

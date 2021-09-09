@@ -12,6 +12,6 @@ from ned.utils import Config
     help="to send data to elasticsearch",
     show_default=True,
 )
-def produce(type: str, to_elastic: bool):
+def produce(type: str, to_elastic: bool) -> None:
     config = Config()
     main(type=type, config=config, to_elastic=to_elastic)
