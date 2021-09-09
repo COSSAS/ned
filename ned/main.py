@@ -1,9 +1,9 @@
 import logging
 from pprint import pformat
 
-from ned.config import Config
 from ned.io.elasticsearch import connect_to_elastic, ship_records_to_elastic
 from ned.producer import Producer
+from ned.utils import Config, log_records_timestamps
 
 
 def main(type: str, config: Config, to_elastic: bool = False):
@@ -24,8 +24,10 @@ def main(type: str, config: Config, to_elastic: bool = False):
         )
     else:
         logging.info(pformat(all_records))
+    log_records_timestamps(records=benign_records)
+    log_records_timestamps(records=anomalous_records, type="anomalous")
 
 
 if __name__ == "__main__":
-    config = Config()
-    main(type=config.TYPE_RECORDS, config=config)
+    config = Config(LOG_LEVEL="INFO")
+    main(type=config.TYPE_RECORDS, config=config, to_elastic=True)

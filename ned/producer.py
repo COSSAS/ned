@@ -4,8 +4,6 @@ import sys
 from datetime import datetime, time, timedelta, timezone
 from typing import List, Tuple
 
-import dateutil.parser as dp
-
 from ned.type.netflow import NetflowRecord
 
 
@@ -54,8 +52,8 @@ class Producer:
                 timestamp=datetime.now(timezone.utc).astimezone()
                 + timedelta(seconds=self.counter),
             )
-            self.counter += 1
-            return record
+        self.counter += 1
+        return record
 
     def produce_many(self, amount: int = 10000, anomalous: bool = False):
         return [self.produce_one(anomalous=anomalous) for _ in range(amount)]
@@ -64,25 +62,5 @@ class Producer:
         self, amount: int, amount_anomalous: int = 0
     ) -> Tuple[List[NetflowRecord], List[NetflowRecord]]:
         benign_records = self.produce_many(amount=amount)
-        logging.warn(
-            "start benign records:    %s %s",
-            benign_records[0].timestamp,
-            int(dp.parse(benign_records[0].timestamp).timestamp()),
-        )
-        logging.warn(
-            "end benign records:      %s %s",
-            benign_records[-1].timestamp,
-            int(dp.parse(benign_records[-1].timestamp).timestamp()),
-        )
         anomalous_records = self.produce_many(amount=amount_anomalous, anomalous=True)
-        logging.warn(
-            "start anomalous records: %s %s",
-            anomalous_records[0].timestamp,
-            int(dp.parse(anomalous_records[0].timestamp).timestamp()),
-        )
-        logging.warn(
-            "end anomalous records:   %s %s",
-            anomalous_records[-1].timestamp,
-            int(dp.parse(anomalous_records[-1].timestamp).timestamp()),
-        )
         return benign_records, anomalous_records

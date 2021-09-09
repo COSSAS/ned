@@ -2,11 +2,9 @@ import logging
 import os
 from dataclasses import asdict, dataclass
 from pprint import pformat
+from typing import List
 
-logging.basicConfig(
-    format="%(levelname)s: %(message)s",
-    level=os.environ.get(key="LOG_LEVEL", default="WARN").upper(),
-)
+import dateutil.parser as dp
 
 
 @dataclass
@@ -19,18 +17,18 @@ class Config:
     TYPE_RECORDS: str = "netflow"
     AMOUNT_RECORDS: int = 10000
     AMOUNT_ANOMALIES: int = 5
+    LOG_LEVEL: str = "WARN"
+    from_env: bool = True
 
-    def __init__(
-        self,
-        from_env: bool = True,
-    ):
+    def __post_init__(self):
         """
         parameters are loaded with the following priority:
         1. from environment variables
-        2. from defaults
+        2. from defaults/passed at constructor
         """
-        if from_env:
+        if self.from_env:
             self.__set_from_env__()
+        configure_logging(loglevel=self.LOG_LEVEL)
         logging.info("configuration: \n%s", pformat(asdict(self)))
 
     def __set_from_env__(self) -> None:
@@ -44,3 +42,26 @@ class Config:
         self.AMOUNT_ANOMALIES = os.environ.get(
             "AMOUNT_ANOMALIES", self.AMOUNT_ANOMALIES
         )
+        self.LOG_LEVEL = os.environ.get("LOG_LEVEL", self.LOG_LEVEL)
+
+
+def configure_logging(loglevel: str) -> None:
+    logging.basicConfig(
+        format="%(levelname)s: %(message)s",
+        level=loglevel.upper(),
+    )
+
+
+def log_records_timestamps(records: List, type: str = "benign  ") -> None:
+    logging.warn(
+        "start %s records:    %s %s",
+        type,
+        records[0].timestamp,
+        int(dp.parse(records[0].timestamp).timestamp()),
+    )
+    logging.warn(
+        "end   %s records:    %s %s",
+        type,
+        records[-1].timestamp,
+        int(dp.parse(records[-1].timestamp).timestamp()),
+    )

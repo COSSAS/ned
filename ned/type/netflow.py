@@ -45,31 +45,22 @@ class NetflowRecord:
     flow_id: int
     src_ip: str
     dest_ip: str
-    src_port: int = random.randint(0, 65535)
-    dest_port: int = random.randint(0, 65535)
     timestamp: datetime = datetime.now(timezone.utc).astimezone()
-    pkts_toserver: int = random.randint(0, 32)
-    pkts_toclient: int = random.randint(0, 32)
-    bytes_toserver: int = 8 * random.randint(0, 32)
-    bytes_toclient: int = 8 * random.randint(0, 32)
-    flow_start: Optional[datetime] = None
-    flow_end: Optional[datetime] = None
-    suricata_entry: Optional[dict] = dataclasses.field(default_factory=dict)
+    suricata: Optional[dict] = dataclasses.field(default_factory=dict)
 
     def __post_init__(self):
-        self.flow_end = (self.timestamp + timedelta(seconds=2)).isoformat()
-        self.flow_start = self.timestamp.isoformat()
-        self.timestamp = self.timestamp.isoformat()
-        self.suricata_entry = suricata_dict_template
-        self.suricata_entry["timestamp"] = self.timestamp
-        self.suricata_entry["flow"]["start"] = self.flow_start
-        self.suricata_entry["flow"]["end"] = self.flow_end
-        self.suricata_entry["flow_id"] = self.flow_id
-        self.suricata_entry["src_ip"] = self.src_ip
-        self.suricata_entry["dest_ip"] = self.dest_ip
-        self.suricata_entry["src_port"] = self.src_port
-        self.suricata_entry["dest_port"] = self.dest_port
-        self.suricata_entry["pkts_toserver"] = self.pkts_toserver
-        self.suricata_entry["pkts_toclient"] = self.pkts_toclient
-        self.suricata_entry["bytes_toserver"] = self.bytes_toserver
-        self.suricata_entry["bytes_toclient"] = self.bytes_toclient
+        self.suricata = suricata_dict_template.copy()
+        self.suricata["flow_id"] = self.flow_id
+        self.suricata["src_ip"] = self.src_ip
+        self.suricata["dest_ip"] = self.dest_ip
+        self.suricata["flow"]["start"] = self.timestamp.isoformat()
+        self.suricata["flow"]["end"] = (
+            self.timestamp + timedelta(seconds=2)
+        ).isoformat()
+        self.suricata["timestamp"] = self.timestamp.isoformat()
+        self.suricata["pkts_toclient"] = random.randint(0, 32)
+        self.suricata["pkts_toserver"] = random.randint(0, 32)
+        self.suricata["bytes_toclient"] = self.suricata["pkts_toclient"] * 8
+        self.suricata["bytes_toserver"] = self.suricata["pkts_toserver"] * 8
+        self.suricata["src_port"] = random.randint(0, 32)
+        self.suricata["dest_port"] = random.randint(0, 32)
