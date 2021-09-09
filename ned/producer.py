@@ -51,6 +51,7 @@ class Producer:
                 dest_ip=dest_ip,
                 timestamp=datetime.now(timezone.utc).astimezone()
                 + timedelta(seconds=self.counter),
+                
             )
         self.counter += 1
         return record

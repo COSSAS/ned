@@ -1,4 +1,5 @@
 import dataclasses
+from ned.type.record import Record
 import random
 from dataclasses import dataclass
 from datetime import datetime, timedelta, timezone
@@ -41,12 +42,10 @@ suricata_dict_template = {
 
 
 @dataclass
-class NetflowRecord:
+class NetflowRecord(Record):
     flow_id: int
-    src_ip: str
-    dest_ip: str
-    timestamp: datetime = datetime.now(timezone.utc).astimezone()
-    suricata: Optional[dict] = dataclasses.field(default_factory=dict)
+    timestamp: datetime
+    suricata: dict = dataclasses.field(default_factory=dict)
 
     def __post_init__(self):
         self.suricata = suricata_dict_template.copy()

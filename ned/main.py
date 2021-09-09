@@ -25,7 +25,8 @@ def main(type: str, config: Config, to_elastic: bool = False):
     else:
         logging.info(pformat(all_records))
     log_records_timestamps(records=benign_records)
-    log_records_timestamps(records=anomalous_records, type="anomalous")
+    if anomalous_records:
+        log_records_timestamps(records=anomalous_records, type="anomalous")
 
 
 if __name__ == "__main__":

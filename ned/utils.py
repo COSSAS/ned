@@ -1,4 +1,5 @@
 import logging
+from ned.type.record import Record
 import os
 from dataclasses import asdict, dataclass
 from pprint import pformat
@@ -16,7 +17,7 @@ class Config:
     ES_PASSWORD: str = "changeme"
     TYPE_RECORDS: str = "netflow"
     AMOUNT_RECORDS: int = 10000
-    AMOUNT_ANOMALIES: int = 5
+    AMOUNT_ANOMALIES: int = 0
     LOG_LEVEL: str = "WARN"
     from_env: bool = True
 
@@ -38,10 +39,10 @@ class Config:
         self.ES_USER = os.environ.get("ES_USER", self.ES_USER)
         self.ES_PASSWORD = os.environ.get("ES_PASSWORD", self.ES_PASSWORD)
         self.TYPE_RECORDS = os.environ.get("TYPE_RECORDS", self.TYPE_RECORDS)
-        self.AMOUNT_RECORDS = os.environ.get("AMOUNT_RECORDS", self.AMOUNT_RECORDS)
-        self.AMOUNT_ANOMALIES = os.environ.get(
+        self.AMOUNT_RECORDS = int(os.environ.get("AMOUNT_RECORDS", self.AMOUNT_RECORDS))
+        self.AMOUNT_ANOMALIES = int(os.environ.get(
             "AMOUNT_ANOMALIES", self.AMOUNT_ANOMALIES
-        )
+        ))
         self.LOG_LEVEL = os.environ.get("LOG_LEVEL", self.LOG_LEVEL)
 
 
@@ -52,16 +53,18 @@ def configure_logging(loglevel: str) -> None:
     )
 
 
-def log_records_timestamps(records: List, type: str = "benign  ") -> None:
+def log_records_timestamps(records: List[Record], type: str = "benign  ") -> None:
+    first_ts = records[0].suricata["timestamp"]
+    last_ts = records[-1].suricata["timestamp"]
     logging.warn(
         "start %s records:    %s %s",
         type,
-        records[0].timestamp,
-        int(dp.parse(records[0].timestamp).timestamp()),
+        first_ts,
+        int(dp.parse(first_ts).timestamp()),
     )
     logging.warn(
         "end   %s records:    %s %s",
         type,
-        records[-1].timestamp,
-        int(dp.parse(records[-1].timestamp).timestamp()),
+        last_ts,
+        int(dp.parse(last_ts).timestamp()),
     )
