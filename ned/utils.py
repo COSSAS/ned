@@ -57,13 +57,13 @@ def configure_logging(loglevel: str) -> None:
 def log_records_timestamps(records: List[Record], type: str = "benign  ") -> None:
     first_ts = records[0].suricata["timestamp"]
     last_ts = records[-1].suricata["timestamp"]
-    logging.warn(
+    logging.warning(
         "start %s records:    %s %s",
         type,
         first_ts,
         int(dp.parse(first_ts).timestamp()),
     )
-    logging.warn(
+    logging.warning(
         "end   %s records:    %s %s",
         type,
         last_ts,
