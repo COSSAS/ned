@@ -56,9 +56,9 @@ class NetflowRecord(Record):
             self.timestamp + timedelta(seconds=2)
         ).isoformat()
         self.suricata["timestamp"] = self.timestamp.isoformat()
-        self.suricata["pkts_toclient"] = str(random.randint(0, 32))  # nosec
-        self.suricata["pkts_toserver"] = str(random.randint(0, 32))  # nosec
-        self.suricata["bytes_toclient"] = str(int(self.suricata["pkts_toclient"]) * 8)  # type: ignore[call-overload]
-        self.suricata["bytes_toserver"] = str(int(self.suricata["pkts_toserver"]) * 8)  # type: ignore[call-overload]
+        self.suricata["flow"]["pkts_toclient"] = str(random.randint(0, 32))  # nosec
+        self.suricata["flow"]["pkts_toserver"] = str(random.randint(0, 32))  # nosec
+        self.suricata["flow"]["bytes_toclient"] = str(int(self.suricata["flow"]["pkts_toclient"]) * 8)  # type: ignore[call-overload]
+        self.suricata["flow"]["bytes_toserver"] = str(int(self.suricata["flow"]["pkts_toserver"]) * 8)  # type: ignore[call-overload]
         self.suricata["src_port"] = str(random.randint(0, 32))  # nosec
         self.suricata["dest_port"] = str(random.randint(0, 32))  # nosec
