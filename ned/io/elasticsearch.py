@@ -11,7 +11,7 @@ from elasticsearch import Elasticsearch
 from ned.type.record import Record
 
 
-def connect_to_elastic(
+def connect_to_elastic(  # nosec
     es_host: str = "localhost",
     es_port: str = "9200",
     es_user: str = "",
