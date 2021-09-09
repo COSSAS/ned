@@ -1,7 +1,7 @@
 import logging
 import random
 import sys
-from datetime import datetime, time, timedelta, timezone
+from datetime import datetime, timedelta, timezone
 from typing import List, Tuple
 
 from ned.type.netflow import NetflowRecord, suricata_template_netflow
@@ -31,16 +31,16 @@ class Producer:
         ]
 
     def pick_source_ip(self) -> str:
-        return random.choice(self.hosts_subnet1)
+        return random.choice(self.hosts_subnet1)  # nosec
 
     def pick_destination_ip(self, src_ip: str, anomalous: bool = False) -> str:
         if anomalous:
             # anomalous = to another subnet
-            return random.choice(self.hosts_subnet2)
+            return random.choice(self.hosts_subnet2)  # nosec
         # not anomalous = same subnet, different address
         destinations = self.hosts_subnet1[:]
         destinations.remove(src_ip)
-        return random.choice(destinations)
+        return random.choice(destinations)  # nosec
 
     def produce_one(self, anomalous: bool = False) -> Record:
         src_ip = self.pick_source_ip()

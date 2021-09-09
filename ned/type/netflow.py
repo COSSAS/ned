@@ -1,8 +1,7 @@
-import dataclasses
 import random
 from dataclasses import dataclass
-from datetime import datetime, timedelta, timezone
-from typing import Any, Collection, Dict, Optional
+from datetime import datetime, timedelta
+from typing import Collection, Dict
 
 from ned.type.record import Record
 
@@ -57,9 +56,9 @@ class NetflowRecord(Record):
             self.timestamp + timedelta(seconds=2)
         ).isoformat()
         self.suricata["timestamp"] = self.timestamp.isoformat()
-        self.suricata["pkts_toclient"] = str(random.randint(0, 32))
-        self.suricata["pkts_toserver"] = str(random.randint(0, 32))
+        self.suricata["pkts_toclient"] = str(random.randint(0, 32))  # nosec
+        self.suricata["pkts_toserver"] = str(random.randint(0, 32))  # nosec
         self.suricata["bytes_toclient"] = str(int(self.suricata["pkts_toclient"]) * 8)  # type: ignore[call-overload]
         self.suricata["bytes_toserver"] = str(int(self.suricata["pkts_toserver"]) * 8)  # type: ignore[call-overload]
-        self.suricata["src_port"] = str(random.randint(0, 32))
-        self.suricata["dest_port"] = str(random.randint(0, 32))
+        self.suricata["src_port"] = str(random.randint(0, 32))  # nosec
+        self.suricata["dest_port"] = str(random.randint(0, 32))  # nosec
