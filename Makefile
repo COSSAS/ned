@@ -30,9 +30,11 @@ deployment: config-bootstrap
 	docker compose -f deployment/docker-compose.yml -f deployment/prod.yml up -d
 
 deployment-linux: config-bootsrap
+	@echo $$IP_ADDRESS
 	docker compose -f deployment/docker-compose.yml -f deployment/prod.yml -f deployment/linux.yml up -d
 
 config-bootstrap:
+	export IP_ADDRESS=$$(ip addr show | grep "\binet\b.*\bdocker0\b" | awk '{print $2}' | cut -d '/' -f 1)
 	@if $(MAKE) -s confirm ; then \
 		cp deployment/config-defaults.env deployment/config.env ; \
 		nano deployment/config.env ; \
