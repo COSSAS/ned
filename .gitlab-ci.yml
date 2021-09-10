@@ -1,15 +1,36 @@
-include:
-  - project: 'notno/ci-templates'
-    file: 'templates/python-docker.yml'
-    ref: 'beta'
+# include:
+#   - project: 'notno/ci-templates'
+#     file: 'templates/python-docker.yml'
+#     ref: 'beta'
 
-variables:
-  PYTHON_PACKAGE: ned
-  GITLAB_RECOMMENDED_AUTO_FIX: "true"
-  BANDIT_SKIP_CHECK: "B311"
+# variables:
+#   PYTHON_PACKAGE: ned
+#   GITLAB_RECOMMENDED_AUTO_FIX: "true"
+#   BANDIT_SKIP_CHECK: "B311"
 
-python:bandit:
-  allow_failure: true
+# python:bandit:
+#   allow_failure: true
 
-grype:
-  allow_failure: true
+# grype:
+#   allow_failure: true
+
+find-next-release:
+  stage: .pre
+  image: node
+  script:
+    - npm install -g semantic-release @semantic-release/gitlab @semantic-release/git @semantic-release/changelog @semantic-release/exec
+    - semantic-release --dry-run --no-ci 
+    - NEXT_RELEASE_VERSION=$(semantic-release --dry-run --no-ci | grep -oP 'The next release version is \K[0-9]+\.[0-9]+\.[0-9]+') || true
+    - |
+        if [ -z ${NEXT_RELEASE_VERSION+x} ]; then
+          echo "Next release: ${NEXT_RELEASE_VERSION}"
+          echo NEXT_RELEASE_VERSION="${NEXT_RELEASE_VERSION}" > $CI_PROJECT_DIR/variables.env
+        else
+          echo "[!] Release will not be bumped"
+        fi
+  artifacts:
+    reports:
+        dotenv: variables.env
+  only:
+    variables:
+        - $GL_TOKEN
