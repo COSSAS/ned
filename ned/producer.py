@@ -63,8 +63,10 @@ class Producer:
         return [self.produce_one(anomalous=anomalous) for _ in range(amount)]
 
     def produce(
-        self, amount: int, amount_anomalous: int = 0
+        self, amount: int, NED_AMOUNT_RECORDS_ANOMALOUS: int = 0
     ) -> Tuple[List[Record], List[Record]]:
         benign_records = self.produce_many(amount=amount)
-        anomalous_records = self.produce_many(amount=amount_anomalous, anomalous=True)
+        anomalous_records = self.produce_many(
+            amount=NED_AMOUNT_RECORDS_ANOMALOUS, anomalous=True
+        )
         return benign_records, anomalous_records

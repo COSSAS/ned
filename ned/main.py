@@ -13,7 +13,8 @@ def main(
 ) -> Tuple[List[Record], Optional[List[Record]]]:
     producer = Producer(type=type)
     benign_records, anomalous_records = producer.produce(
-        amount=config.AMOUNT_RECORDS, amount_anomalous=config.AMOUNT_ANOMALIES
+        amount=config.NED_AMOUNT_RECORDS,
+        NED_AMOUNT_RECORDS_ANOMALOUS=config.NED_AMOUNT_RECORDS_ANOMALOUS,
     )
     all_records = benign_records + anomalous_records
     if to_elastic:
