@@ -19,8 +19,9 @@ find-next-release:
   image: node
   script:
     # - npx install -g semantic-release @semantic-release/gitlab @semantic-release/git @semantic-release/changelog @semantic-release/exec
+    - curl https://gitlab.com/notno/ned/-/snippets/2173927/raw/main/semantic-release-find-next > .releaserc
     - npx --no-install semantic-release --dry-run --no-ci 
-    - NEXT_RELEASE_VERSION=$(semantic-release --dry-run --no-ci | grep -oP 'The next release version is \K[0-9]+\.[0-9]+\.[0-9]+') || true
+    - NEXT_RELEASE_VERSION=`cat .VERSION`
     - |
         if [ -z ${NEXT_RELEASE_VERSION+x} ]; then
           echo "Next release: ${NEXT_RELEASE_VERSION}"
