@@ -5,8 +5,3 @@ services:
     build: ../.
     env_file:
       - config-defaults.env
-      
-  dns:
-    build: ../.
-    env_file:
-      - config-defaults.env

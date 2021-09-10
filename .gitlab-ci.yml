@@ -1,6 +1,6 @@
 include:
   - project: 'notno/ci-templates'
-    file: 'templates/python.yml'
+    file: 'templates/python-docker.yml'
     ref: 'beta'
 
 variables:
@@ -9,4 +9,7 @@ variables:
   BANDIT_SKIP_CHECK: "B311"
 
 python:bandit:
+  allow_failure: true
+
+grype:
   allow_failure: true
