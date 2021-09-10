@@ -5,3 +5,8 @@ include:
 
 variables:
   PYTHON_PACKAGE: ned
+  GITLAB_RECOMMENDED_AUTO_FIX: "true"
+
+python:bandit:
+  variables:
+    SKIP_CHECK: B311
