@@ -18,7 +18,7 @@ find-next-release:
   stage: .pre
   image: registry.gitlab.com/notno/ci/images/node:latest
   script:
-    - npm install -g semantic-release @semantic-release/gitlab @semantic-release/git @semantic-release/changelog @semantic-release/exec
+    - npm install -g semantic-release @semantic-release/exec
     - curl https://gitlab.com/notno/ned/-/snippets/2173927/raw/main/semantic-release-find-next > .releaserc
     - semantic-release --dry-run --no-ci
     - NEXT_RELEASE_VERSION=`cat .VERSION` || true
