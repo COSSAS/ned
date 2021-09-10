@@ -1,3 +1,21 @@
+# [0.4.0](https://gitlab.com/notno/ned/compare/v0.3.1...v0.4.0) (2021-09-10)
+
+
+### Bug Fixes
+
+* adds docker extra host to reach host.docker.internal on linux ([a888c25](https://gitlab.com/notno/ned/commit/a888c256614f3c0d1d11fe478a836736493207f9))
+* compose syntax ([3e769e1](https://gitlab.com/notno/ned/commit/3e769e12f24726dfbed51e0f624170f83434f0c1))
+* fixes docker tag ([d21318e](https://gitlab.com/notno/ned/commit/d21318e5b6f2c17e73155577bf41f1e4512c1282))
+* makefile deployment-linux ([796bca8](https://gitlab.com/notno/ned/commit/796bca8efec8a7f98e24bfcb3150e669cb6b6301))
+* makefile deployment-linux ([8595d12](https://gitlab.com/notno/ned/commit/8595d12c7dcb948142d98f5fb6ccb891295d4a52))
+* new file x ([b46b7b9](https://gitlab.com/notno/ned/commit/b46b7b928c8834c01c51fc9189028e80b8f892d2))
+* remose bootstrap from deployment-linux ([53b9b9b](https://gitlab.com/notno/ned/commit/53b9b9bedd0d65f3b75a7ee9feb91e54f79ff76d))
+
+
+### Features
+
+* adds IP address for docker host on linux in makefile ([cdd98c5](https://gitlab.com/notno/ned/commit/cdd98c510489130819c105d1e312128f88a796e9))
+
 ## [0.3.1](https://gitlab.com/notno/ned/compare/v0.3.0...v0.3.1) (2021-09-10)
 
 

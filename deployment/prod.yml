@@ -2,6 +2,6 @@ version: '3.8'
 
 services:
   netflow:
-    image: registry.gitlab.com/notno/ned:v0.3.1
+    image: registry.gitlab.com/notno/ned:v0.4.0
     env_file:
       - config.env
