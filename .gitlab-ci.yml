@@ -35,6 +35,7 @@ tbump:
   stage: build
   before_script:
     - NEXT_RELEASE_VERSION=`cat .VERSION` || true
+    - echo $NEXT_RELEASE_VERSION
   script:
     - pip install tbump
     - |
