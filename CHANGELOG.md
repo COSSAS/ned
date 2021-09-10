@@ -1,3 +1,10 @@
+## [0.3.1](https://gitlab.com/notno/ned/compare/v0.3.0...v0.3.1) (2021-09-10)
+
+
+### Bug Fixes
+
+* fixes versions ([f91987f](https://gitlab.com/notno/ned/commit/f91987f367f6515feef34c9e5a3f0b29216b291a))
+
 ## [0.3.1-beta.3](https://gitlab.com/notno/ned/compare/v0.3.1-beta.2...v0.3.1-beta.3) (2021-09-10)
 
 
