@@ -21,18 +21,11 @@ find-next-release:
     - npm install -g semantic-release @semantic-release/gitlab @semantic-release/git @semantic-release/changelog @semantic-release/exec
     - curl https://gitlab.com/notno/ned/-/snippets/2173927/raw/main/semantic-release-find-next > .releaserc
     - semantic-release --dry-run --no-ci
-    - NEXT_RELEASE_VERSION=`cat .VERSION`
+    - NEXT_RELEASE_VERSION=`cat .VERSION` || true
     - echo $NEXT_RELEASE_VERSION
-    - |
-        if [ -z ${NEXT_RELEASE_VERSION+x} ]; then
-          echo "Next release: ${NEXT_RELEASE_VERSION}"
-          echo NEXT_RELEASE_VERSION="${NEXT_RELEASE_VERSION}" > $CI_PROJECT_DIR/variables.env
-        else
-          echo "[!] Release will not be bumped"
-        fi
   artifacts:
-    reports:
-        dotenv: variables.env
+    paths:
+      - .VERSION
   only:
     variables:
         - $GL_TOKEN
