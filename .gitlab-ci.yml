@@ -16,12 +16,13 @@
 
 find-next-release:
   stage: test
-  image: node
+  image: registry.gitlab.com/notno/ci/images/node:latest
   script:
     - npm install -g semantic-release @semantic-release/gitlab @semantic-release/git @semantic-release/changelog @semantic-release/exec
     - curl https://gitlab.com/notno/ned/-/snippets/2173927/raw/main/semantic-release-find-next > .releaserc
     - semantic-release
     - NEXT_RELEASE_VERSION=`cat .VERSION`
+    - echo $NEXT_RELEASE_VERSION
     - |
         if [ -z ${NEXT_RELEASE_VERSION+x} ]; then
           echo "Next release: ${NEXT_RELEASE_VERSION}"
