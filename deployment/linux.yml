@@ -1,5 +1,6 @@
 version: "3.8"
 
-netflow:
-  extra_hosts:
-    docker.host: ${IP_ADDRESS}
+services:
+  netflow:
+    extra_hosts:
+      docker.host: ${IP_ADDRESS}
