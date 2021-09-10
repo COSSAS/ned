@@ -1,3 +1,10 @@
+# [0.3.0](https://gitlab.com/notno/ned/compare/v0.2.0...v0.3.0) (2021-09-10)
+
+
+### Features
+
+* adds docker ([0933d63](https://gitlab.com/notno/ned/commit/0933d63b55e0dfae48253faf53b881f4f8e04eb9))
+
 # [0.2.0](https://gitlab.com/notno/ned/compare/v0.1.0...v0.2.0) (2021-09-10)
 
 
