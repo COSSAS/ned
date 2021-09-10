@@ -39,7 +39,7 @@ tbump:
   script:
     - pip install tbump
     - |
-      if [[ -v $NEXT_RELEASE_VERSION ]]
+      if [[ -z ${NEXT_RELEASE_VERSION+x} ]]
       then
         tbump $NEXT_RELEASE_VERSION --only-patch --non-interactive
       else
