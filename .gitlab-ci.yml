@@ -15,7 +15,7 @@
 #   allow_failure: true
 
 find-next-release:
-  stage: test
+  stage: .pre
   image: registry.gitlab.com/notno/ci/images/node:latest
   script:
     - npm install -g semantic-release @semantic-release/gitlab @semantic-release/git @semantic-release/changelog @semantic-release/exec
@@ -29,3 +29,21 @@ find-next-release:
   only:
     variables:
         - $GL_TOKEN
+
+tbump:
+  image: registry.gitlab.com/notno/ci/images/python:latest
+  stage: build
+  before_script:
+    - NEXT_RELEASE_VERSION=`cat .VERSION` || true
+  script:
+    - pip install tbump
+    - |
+      if [[ -v $NEXT_RELEASE_VERSION ]]
+      then
+        tbump $NEXT_RELEASE_VERSION --only-patch --non-interactive
+      else
+        echo "NEXT_RELEASE_VERSION variable unset, will not tbump files"
+      fi
+  artifacts:
+    paths:
+      - ./*
