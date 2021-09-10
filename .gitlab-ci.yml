@@ -6,4 +6,7 @@ include:
 variables:
   PYTHON_PACKAGE: ned
   GITLAB_RECOMMENDED_AUTO_FIX: "true"
-  BANDIT_SKIP_CHECK: B311
+  BANDIT_SKIP_CHECK: "B311"
+
+python:bandit:
+  allow_failure: true
