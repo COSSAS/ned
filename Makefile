@@ -29,7 +29,7 @@ test-compose-elastic:
 deployment: config-bootstrap
 	docker compose -f deployment/docker-compose.yml -f deployment/prod.yml up -d
 
-deployment-linux: config-bootstrap
+deployment-linux: 
 	docker compose -f deployment/docker-compose.yml -f deployment/prod.yml -f deployment/linux.yml up -d
 
 config-bootstrap:
