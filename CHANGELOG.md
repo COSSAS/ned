@@ -1,3 +1,10 @@
+# [0.2.0](https://gitlab.com/notno/ned/compare/v0.1.0...v0.2.0) (2021-09-10)
+
+
+### Features
+
+* adds netflow production ([5a6d900](https://gitlab.com/notno/ned/commit/5a6d9003798e35743c38bea1db58c57e2ba83b94))
+
 ## [0.1.1-beta.2](https://gitlab.com/notno/ned/compare/v0.1.1-beta.1...v0.1.1-beta.2) (2021-09-10)
 
 
