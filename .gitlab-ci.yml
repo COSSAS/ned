@@ -1,50 +1,15 @@
-# include:
-#   - project: 'notno/ci-templates'
-#     file: 'templates/python-docker.yml'
-#     ref: 'beta'
+include:
+  - project: 'notno/ci-templates'
+    file: 'templates/python-docker.yml'
+    ref: 'beta'
 
-# variables:
-#   PYTHON_PACKAGE: ned
-#   GITLAB_RECOMMENDED_AUTO_FIX: "true"
-#   BANDIT_SKIP_CHECK: "B311"
+variables:
+  PYTHON_PACKAGE: ned
+  GITLAB_RECOMMENDED_AUTO_FIX: "true"
+  BANDIT_SKIP_CHECK: "B311"
 
-# python:bandit:
-#   allow_failure: true
+python:bandit:
+  allow_failure: true
 
-# grype:
-#   allow_failure: true
-
-find-next-release:
-  stage: .pre
-  image: registry.gitlab.com/notno/ci/images/node:latest
-  script:
-    - npm install -g semantic-release @semantic-release/exec
-    - curl https://gitlab.com/notno/ned/-/snippets/2173927/raw/main/semantic-release-find-next > .releaserc
-    - semantic-release --dry-run --no-ci
-    - NEXT_RELEASE_VERSION=`cat .VERSION` || true
-    - echo $NEXT_RELEASE_VERSION
-  artifacts:
-    paths:
-      - .VERSION
-  only:
-    variables:
-        - $GL_TOKEN
-
-tbump:
-  image: registry.gitlab.com/notno/ci/images/python:latest
-  stage: build
-  before_script:
-    - NEXT_RELEASE_VERSION=`cat .VERSION` || true
-    - echo $NEXT_RELEASE_VERSION
-  script:
-    - pip install tbump
-    - |
-      if [ ! -z ${NEXT_RELEASE_VERSION+x} ]
-      then
-        tbump $NEXT_RELEASE_VERSION --only-patch --non-interactive
-      else
-        echo "NEXT_RELEASE_VERSION variable unset, will not tbump files"
-      fi
-  artifacts:
-    paths:
-      - ./*
+grype:
+  allow_failure: true
