@@ -27,7 +27,10 @@ test-compose-elastic:
 	docker compose -f deployment/docker-compose.yml -f deployment/dev.yml up
 
 deployment: config-bootstrap
-	docker compose -f deployment/docker-compose.yml -f deployment/prod.yml up
+	docker compose -f deployment/docker-compose.yml -f deployment/prod.yml up -d
+
+deployment-linux: config-bootsrap
+	docker compose -f deployment/docker-compose.yml -f deployment/prod.yml -f deployment/linux.yml up -d
 
 config-bootstrap:
 	@if $(MAKE) -s confirm ; then \
