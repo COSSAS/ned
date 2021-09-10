@@ -1,3 +1,21 @@
+## [0.3.1-beta.3](https://gitlab.com/notno/ned/compare/v0.3.1-beta.2...v0.3.1-beta.3) (2021-09-10)
+
+
+### Bug Fixes
+
+* finally ([7e38f8d](https://gitlab.com/notno/ned/commit/7e38f8de742ada2dc7faa8d37b6467a14d1b228f))
+* ok ([f44b3c2](https://gitlab.com/notno/ned/commit/f44b3c2123a6ba95693673aaebc9163d38adf31f))
+* pre-release symbol ([7bc5254](https://gitlab.com/notno/ned/commit/7bc5254e24ab847c2b02cdebdac61e0e5689f2ce))
+* pre-release symbol ([595559b](https://gitlab.com/notno/ned/commit/595559b8d67b4f39e08bac4e10bab1c18d4ce2ec))
+* progress ([81c5e46](https://gitlab.com/notno/ned/commit/81c5e46822b8862cc4cea516f771e3a2423b81d2))
+* progress ([cf6c31f](https://gitlab.com/notno/ned/commit/cf6c31f82bedbc059a235cccd8a745f1375e7a76))
+* progress ([eea548c](https://gitlab.com/notno/ned/commit/eea548cd42214e432e4e2fdad8cb8293e89352f0))
+* progress ([3782e0a](https://gitlab.com/notno/ned/commit/3782e0a2d6ca3b94c7e9da06645e7d53ce56edfa))
+* progress ([691c9aa](https://gitlab.com/notno/ned/commit/691c9aa82be01ca35d7179c245025ba3a52ea34a))
+* will it work ([b37243c](https://gitlab.com/notno/ned/commit/b37243c5f5f87663de0f1a2d7b108a458eadd4ca))
+* will it work ([7e55f5f](https://gitlab.com/notno/ned/commit/7e55f5f5060cc2b06185122761f9a2f808d69532))
+* yes ([604845d](https://gitlab.com/notno/ned/commit/604845ded15f2b5f2a4816bf152034ea578fa74b))
+
 # [0.3.0](https://gitlab.com/notno/ned/compare/v0.2.0...v0.3.0) (2021-09-10)
 
 
