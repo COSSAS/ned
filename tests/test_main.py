@@ -6,8 +6,8 @@ from ned.utils import Config
 def test_main_netflows():
     config = Config(
         TYPE_RECORDS="netflow",
-        AMOUNT_RECORDS=1,
-        AMOUNT_ANOMALIES=1,
+        NED_AMOUNT_RECORDS=1,
+        NED_AMOUNT_RECORDS_ANOMALOUS=1,
         LOG_LEVEL="info",
         from_env=False,
     )

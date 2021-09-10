@@ -17,8 +17,8 @@ class Config:
     ES_USER: str = "elastic"
     ES_PASSWORD: str = "changeme"
     TYPE_RECORDS: str = "netflow"
-    AMOUNT_RECORDS: int = 10000
-    AMOUNT_ANOMALIES: int = 0
+    NED_AMOUNT_RECORDS: int = 10000
+    NED_AMOUNT_RECORDS_ANOMALOUS: int = 0
     LOG_LEVEL: str = "WARN"
     from_env: bool = True
 
@@ -40,9 +40,13 @@ class Config:
         self.ES_USER = os.environ.get("ES_USER", self.ES_USER)
         self.ES_PASSWORD = os.environ.get("ES_PASSWORD", self.ES_PASSWORD)
         self.TYPE_RECORDS = os.environ.get("TYPE_RECORDS", self.TYPE_RECORDS)
-        self.AMOUNT_RECORDS = int(os.environ.get("AMOUNT_RECORDS", self.AMOUNT_RECORDS))
-        self.AMOUNT_ANOMALIES = int(
-            os.environ.get("AMOUNT_ANOMALIES", self.AMOUNT_ANOMALIES)
+        self.NED_AMOUNT_RECORDS = int(
+            os.environ.get("NED_AMOUNT_RECORDS", self.NED_AMOUNT_RECORDS)
+        )
+        self.NED_AMOUNT_RECORDS_ANOMALOUS = int(
+            os.environ.get(
+                "NED_AMOUNT_RECORDS_ANOMALOUS", self.NED_AMOUNT_RECORDS_ANOMALOUS
+            )
         )
         self.LOG_LEVEL = os.environ.get("LOG_LEVEL", self.LOG_LEVEL)
 

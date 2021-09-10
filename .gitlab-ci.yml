@@ -1,12 +1,15 @@
 include:
   - project: 'notno/ci-templates'
-    file: 'templates/python.yml'
+    file: 'templates/python-docker.yml'
     ref: 'beta'
 
 variables:
   PYTHON_PACKAGE: ned
   GITLAB_RECOMMENDED_AUTO_FIX: "true"
+  BANDIT_SKIP_CHECK: "B311"
 
 python:bandit:
-  variables:
-    SKIP_CHECK: B311
+  allow_failure: true
+
+grype:
+  allow_failure: true
