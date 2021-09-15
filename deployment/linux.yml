@@ -3,4 +3,4 @@ version: "3.8"
 services:
   netflow:
     extra_hosts:
-      docker.host: ${IP_ADDRESS}
+      docker.host: ${DOCKER_GATEWAY_HOST}
