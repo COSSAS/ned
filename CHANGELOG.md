@@ -1,3 +1,16 @@
+# [0.5.0](https://gitlab.com/notno/ned/compare/v0.4.0...v0.5.0) (2021-09-16)
+
+
+### Bug Fixes
+
+* fixes version manually ([5e18c1b](https://gitlab.com/notno/ned/commit/5e18c1bc9e579456b25b20d57c0197de2cba5bb1))
+
+
+### Features
+
+* 2 clusters instead of one ([e56bc09](https://gitlab.com/notno/ned/commit/e56bc098f2e2ac8baade4c5147cae5e20a4943f2))
+* adds NED_START_TIMESTAMP_EPOCHS parameter ([4262d5f](https://gitlab.com/notno/ned/commit/4262d5f3d5573e4c450ce04cebe9e275e1d189c9))
+
 # [0.4.0](https://gitlab.com/notno/ned/compare/v0.3.1...v0.4.0) (2021-09-10)
 
 
