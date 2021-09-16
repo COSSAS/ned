@@ -11,7 +11,9 @@ from ned.utils import Config, log_records_timestamps
 def main(
     type: str, config: Config, to_elastic: bool = False
 ) -> Tuple[List[Record], Optional[List[Record]]]:
-    producer = Producer(type=type)
+    producer = Producer(
+        type=type, start_timestamp_epochs=config.NED_START_TIMESTAMP_EPOCHS
+    )
     benign_records, anomalous_records = producer.produce(
         amount=config.NED_AMOUNT_RECORDS,
         NED_AMOUNT_RECORDS_ANOMALOUS=config.NED_AMOUNT_RECORDS_ANOMALOUS,

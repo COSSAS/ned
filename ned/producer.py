@@ -9,7 +9,14 @@ from ned.type.record import Record
 
 
 class Producer:
-    def __init__(self, type: str):
+    def __init__(
+        self,
+        type: str,
+        start_timestamp_epochs: float = datetime.now().astimezone().timestamp(),
+    ):
+        self.start_timestamp = datetime.fromtimestamp(
+            start_timestamp_epochs
+        ).astimezone()
         if type not in ["netflow", "dns"]:
             logging.critical("type must be either 'dns' or 'netflow'")
             sys.exit(1)
@@ -30,28 +37,45 @@ class Producer:
             "192.168.0.5",
         ]
 
-    def pick_source_ip(self) -> str:
-        return random.choice(self.hosts_subnet1)  # nosec
+    def pick_source_and_dest_subnets(
+        self,
+        anomalous: bool = False,
+    ) -> Tuple[List[str], List[str]]:
+        if self.counter % 2 == 0:
+            source_subnet = self.hosts_subnet1[:]
+        else:
+            source_subnet = self.hosts_subnet2[:]
 
-    def pick_destination_ip(self, src_ip: str, anomalous: bool = False) -> str:
-        if anomalous:
-            # anomalous = to another subnet
-            return random.choice(self.hosts_subnet2)  # nosec
-        # not anomalous = same subnet, different address
-        destinations = self.hosts_subnet1[:]
-        destinations.remove(src_ip)
-        return random.choice(destinations)  # nosec
+        if not anomalous:
+            dest_subnet = source_subnet[:]
+        elif self.counter % 2 == 0:
+            dest_subnet = self.hosts_subnet2[:]
+        else:
+            dest_subnet = self.hosts_subnet1[:]
+        return source_subnet, dest_subnet
 
-    def produce_one(self, anomalous: bool = False) -> Record:
-        src_ip = self.pick_source_ip()
-        dest_ip = self.pick_destination_ip(src_ip=src_ip, anomalous=anomalous)
+    def pick_source_ip(self, subnet: List[str]) -> str:
+        return random.choice(subnet)  # nosec
+
+    def pick_destination_ip(self, src_ip: str, destination_subnet: List[str]) -> str:
+        if src_ip in destination_subnet:
+            destination_subnet.remove(src_ip)
+        return random.choice(destination_subnet)  # nosec
+
+    def produce_one(self, timestamp: datetime, anomalous: bool = False) -> Record:
+        source_subnet, dest_subnet = self.pick_source_and_dest_subnets(
+            anomalous=anomalous
+        )
+        src_ip = self.pick_source_ip(subnet=source_subnet)
+        dest_ip = self.pick_destination_ip(
+            src_ip=src_ip, destination_subnet=dest_subnet
+        )
         if self.type == "netflow":
             record = NetflowRecord(
                 flow_id=self.counter,
                 src_ip=src_ip,
                 dest_ip=dest_ip,
-                timestamp=datetime.now(timezone.utc).astimezone()
-                + timedelta(seconds=self.counter),
+                timestamp=timestamp,
                 suricata=suricata_template_netflow.copy(),
             )
         self.counter += 1
@@ -60,7 +84,13 @@ class Producer:
     def produce_many(
         self, amount: int = 10000, anomalous: bool = False
     ) -> List[Record]:
-        return [self.produce_one(anomalous=anomalous) for _ in range(amount)]
+        return [
+            self.produce_one(
+                timestamp=self.start_timestamp + timedelta(seconds=self.counter),
+                anomalous=anomalous,
+            )
+            for _ in range(amount)
+        ]
 
     def produce(
         self, amount: int, NED_AMOUNT_RECORDS_ANOMALOUS: int = 0

@@ -1,6 +1,7 @@
 import logging
 import os
 from dataclasses import asdict, dataclass
+from datetime import datetime, timezone
 from pprint import pformat
 from typing import List
 
@@ -19,6 +20,7 @@ class Config:
     TYPE_RECORDS: str = "netflow"
     NED_AMOUNT_RECORDS: int = 10000
     NED_AMOUNT_RECORDS_ANOMALOUS: int = 0
+    NED_START_TIMESTAMP_EPOCHS: float = datetime.now().astimezone().timestamp()
     LOG_LEVEL: str = "WARN"
     from_env: bool = True
 
@@ -46,6 +48,11 @@ class Config:
         self.NED_AMOUNT_RECORDS_ANOMALOUS = int(
             os.environ.get(
                 "NED_AMOUNT_RECORDS_ANOMALOUS", self.NED_AMOUNT_RECORDS_ANOMALOUS
+            )
+        )
+        self.NED_START_TIMESTAMP_EPOCHS = float(
+            os.environ.get(
+                "NED_START_TIMESTAMP_EPOCHS", self.NED_START_TIMESTAMP_EPOCHS
             )
         )
         self.LOG_LEVEL = os.environ.get("LOG_LEVEL", self.LOG_LEVEL)
