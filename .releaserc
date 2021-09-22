@@ -8,7 +8,7 @@
     "@semantic-release/release-notes-generator",
     "@semantic-release/changelog",
   ["@semantic-release/git", {
-      "assets": ["CHANGELOG.md","pyproject.toml","README.md","deployment/prod.yml"],
+      "assets": ["CHANGELOG.md","pyproject.toml","tbump.toml","README.md","deployment/prod.yml"],
       "message": "chore(release): ${nextRelease.version}\n\n${nextRelease.notes}"
     }],
   "@semantic-release/gitlab"
