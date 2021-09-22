@@ -1,3 +1,4 @@
+import copy
 import logging
 import random
 import sys
@@ -76,7 +77,7 @@ class Producer:
                 src_ip=src_ip,
                 dest_ip=dest_ip,
                 timestamp=timestamp,
-                suricata=suricata_template_netflow.copy(),
+                suricata=copy.deepcopy(suricata_template_netflow),
             )
         self.counter += 1
         return record
