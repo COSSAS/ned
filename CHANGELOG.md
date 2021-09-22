@@ -1,3 +1,10 @@
+## [0.5.1](https://gitlab.com/notno/ned/compare/v0.5.0...v0.5.1) (2021-09-22)
+
+
+### Bug Fixes
+
+* uses deepcopy on suricata dictionary ([5f2675e](https://gitlab.com/notno/ned/commit/5f2675e1e9df948f8bd1b04936f16200fdfffcf3))
+
 # [0.5.0](https://gitlab.com/notno/ned/compare/v0.4.0...v0.5.0) (2021-09-16)
 
 
