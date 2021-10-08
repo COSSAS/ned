@@ -14,4 +14,4 @@ from ned.utils import Config
 )
 def produce(type: str, to_elastic: bool) -> None:
     config = Config()
-    main(type=type, config=config, to_elastic=to_elastic)
+    main(record_type=type, config=config, to_elastic=to_elastic)

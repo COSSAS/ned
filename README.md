@@ -5,7 +5,9 @@
 
 usage(docker)
 ```
-docker run registry.tno.nl/notno/ned:v0.5.1 --help
+cp deployment/config-defaults.env deployment/config.env
+nano deployment/config.env
+docker run --env deployment/config.env registry.gitlab.com/notno/ned:v0.5.1 --to-elastic --type netflow
 ```
 
 types & formats:
