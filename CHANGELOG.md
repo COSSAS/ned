@@ -1,3 +1,10 @@
+# [0.6.0](https://gitlab.com/notno/ned/compare/v0.5.1...v0.6.0) (2021-10-08)
+
+
+### Features
+
+* add dns, improve performance with generator, ssl ([5b9f42f](https://gitlab.com/notno/ned/commit/5b9f42f16979b608fb606a995499835d8b277d30))
+
 ## [0.5.1](https://gitlab.com/notno/ned/compare/v0.5.0...v0.5.1) (2021-09-22)
 
 
