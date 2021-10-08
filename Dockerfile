@@ -9,5 +9,6 @@ RUN pip install .
 RUN ned --help
 COPY tests tests
 
+ENV DOCKER=true
 ENTRYPOINT [ "ned" ]
 CMD ["--help"]

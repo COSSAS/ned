@@ -1,13 +1,13 @@
 import logging
 import os
+import time
 from dataclasses import asdict, dataclass
-from datetime import datetime, timezone
+from datetime import datetime
+from distutils.util import strtobool
 from pprint import pformat
-from typing import List
 
-import dateutil.parser as dp
-
-from ned.type.record import Record
+import elasticsearch
+from elasticsearch import Elasticsearch
 
 
 @dataclass
@@ -17,6 +17,7 @@ class Config:
     ES_INDEX: str = "netflows"
     ES_USER: str = "elastic"
     ES_PASSWORD: str = "changeme"
+    ES_USE_SSL: bool = False
     TYPE_RECORDS: str = "netflow"
     NED_AMOUNT_RECORDS: int = 10000
     NED_AMOUNT_RECORDS_ANOMALOUS: int = 0
@@ -36,6 +37,8 @@ class Config:
         logging.info("configuration: \n%s", pformat(asdict(self)))
 
     def __set_from_env__(self) -> None:
+        if "ES_USE_SSL" in os.environ:
+            self.ES_USE_SSL = strtobool(os.environ["ES_USE_SSL"])
         self.ES_HOST = os.environ.get("ES_HOST", self.ES_HOST)
         self.ES_PORT = os.environ.get("ES_PORT", self.ES_PORT)
         self.ES_INDEX = os.environ.get("ES_INDEX", self.ES_INDEX)
@@ -65,18 +68,30 @@ def configure_logging(loglevel: str) -> None:
     )
 
 
-def log_records_timestamps(records: List[Record], type: str = "benign  ") -> None:
-    first_ts = records[0].suricata["timestamp"]
-    last_ts = records[-1].suricata["timestamp"]
-    logging.warning(
-        "start %s records:    %s %s",
-        type,
-        first_ts,
-        int(dp.parse(first_ts).timestamp()),
-    )
-    logging.warning(
-        "end   %s records:    %s %s",
-        type,
-        last_ts,
-        int(dp.parse(last_ts).timestamp()),
-    )
+def connect_to_elastic(  # nosec
+    es_host: str = "localhost",
+    es_port: str = "9200",
+    es_user: str = "",
+    es_password: str = "",
+    use_ssl: bool = False,
+) -> elasticsearch.Elasticsearch:
+    connected = False
+    if use_ssl:
+        es_client = Elasticsearch(
+            f"https://{es_user}:{es_password}@{es_host}:{es_port}",
+            use_ssl=True,
+            verify_certs=False,
+            ssl_show_warn=False,
+        )
+    elif es_user and es_password:
+        es_client = Elasticsearch(f"http://{es_user}:{es_password}@{es_host}:{es_port}")
+    else:
+        es_client = Elasticsearch(f"http://{es_host}:{es_port}")
+    while not connected:
+        try:
+            logging.info(es_client.info())
+            connected = True
+        except elasticsearch.exceptions.ConnectionError:
+            logging.error("can't reach elasticsearch at %s, retrying...", es_host)
+            time.sleep(2)
+    return es_client

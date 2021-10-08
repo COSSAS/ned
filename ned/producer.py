@@ -1,27 +1,28 @@
-import copy
 import logging
 import random
+import string
 import sys
-from datetime import datetime, timedelta, timezone
-from typing import List, Tuple
+from datetime import datetime, timedelta
+from importlib import resources
+from typing import Any, Generator, List, Tuple
 
-from ned.type.netflow import NetflowRecord, suricata_template_netflow
-from ned.type.record import Record
+import ned.utils
+from ned.records import DNSRecordRequest, DNSRecordResponse, NetflowRecord, Record
 
 
 class Producer:
     def __init__(
         self,
-        type: str,
+        record_type: str,
         start_timestamp_epochs: float = datetime.now().astimezone().timestamp(),
     ):
         self.start_timestamp = datetime.fromtimestamp(
             start_timestamp_epochs
         ).astimezone()
-        if type not in ["netflow", "dns"]:
-            logging.critical("type must be either 'dns' or 'netflow'")
+        if record_type not in ["netflow", "dns"]:
+            logging.critical("record type must be either 'dns' or 'netflow'")
             sys.exit(1)
-        self.type = type
+        self.record_type = record_type
         self.counter: int = 0
         self.hosts_subnet1 = [
             "10.0.0.1",
@@ -63,7 +64,9 @@ class Producer:
             destination_subnet.remove(src_ip)
         return random.choice(destination_subnet)  # nosec
 
-    def produce_one(self, timestamp: datetime, anomalous: bool = False) -> Record:
+    def produce_one_netflow(
+        self, timestamp: datetime, anomalous: bool = False
+    ) -> Record:
         source_subnet, dest_subnet = self.pick_source_and_dest_subnets(
             anomalous=anomalous
         )
@@ -71,33 +74,51 @@ class Producer:
         dest_ip = self.pick_destination_ip(
             src_ip=src_ip, destination_subnet=dest_subnet
         )
-        if self.type == "netflow":
-            record = NetflowRecord(
-                flow_id=self.counter,
-                src_ip=src_ip,
-                dest_ip=dest_ip,
-                timestamp=timestamp,
-                suricata=copy.deepcopy(suricata_template_netflow),
-            )
+        record = NetflowRecord(
+            flow_id=self.counter, src_ip=src_ip, dest_ip=dest_ip, timestamp=timestamp
+        )
         self.counter += 1
         return record
 
-    def produce_many(
-        self, amount: int = 10000, anomalous: bool = False
-    ) -> List[Record]:
-        return [
-            self.produce_one(
-                timestamp=self.start_timestamp + timedelta(seconds=self.counter),
-                anomalous=anomalous,
+    def produce_one_dns_pair(
+        self, timestamp: datetime, anomalous: bool = False
+    ) -> Tuple[DNSRecordRequest, DNSRecordResponse]:
+        src_ip = self.pick_source_ip(subnet=self.hosts_subnet1)
+        if anomalous:
+            domain_name = (
+                "".join(
+                    random.choice(string.ascii_lowercase)
+                    for _ in range(random.randint(10, 30))
+                )
+                + ".com"
             )
-            for _ in range(amount)
-        ]
-
-    def produce(
-        self, amount: int, NED_AMOUNT_RECORDS_ANOMALOUS: int = 0
-    ) -> Tuple[List[Record], List[Record]]:
-        benign_records = self.produce_many(amount=amount)
-        anomalous_records = self.produce_many(
-            amount=NED_AMOUNT_RECORDS_ANOMALOUS, anomalous=True
+        else:
+            with resources.path(ned, "top-1000-domains.txt") as top_domains_filepath:
+                domain_name = random.choice(list(open(top_domains_filepath))).rstrip()
+        request = DNSRecordRequest(
+            src_ip=src_ip,
+            flow_id=self.counter,
+            timestamp=timestamp,
+            domain_name=domain_name,
         )
-        return benign_records, anomalous_records
+        response = DNSRecordResponse(
+            src_ip=src_ip,
+            flow_id=self.counter,
+            timestamp=timestamp,
+            domain_name=domain_name,
+        )
+        self.counter += 1
+        return request, response
+
+    def generate_records(self, amount: int, anomalous: bool = False) -> Any:
+        for _ in range(amount):
+            if self.record_type == "netflow":
+                yield self.produce_one_netflow(
+                    timestamp=self.start_timestamp + timedelta(seconds=self.counter),
+                    anomalous=anomalous,
+                )
+            elif self.record_type == "dns":
+                yield self.produce_one_dns_pair(
+                    timestamp=self.start_timestamp + timedelta(seconds=self.counter),
+                    anomalous=anomalous,
+                )

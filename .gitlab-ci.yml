@@ -1,7 +1,7 @@
 include:
   - project: 'notno/ci-templates'
     file: 'templates/python-docker.yml'
-    ref: 'beta'
+    ref: 'v4.0.0-beta.8'
 
 variables:
   PYTHON_PACKAGE: ned
@@ -13,3 +13,19 @@ python:bandit:
 
 grype:
   allow_failure: true
+
+ned:netflows:
+  stage: test
+  variables:
+    LOG_LEVEL: info
+    NED_AMOUNT_RECORDS: 10
+  script:
+    - ned --type netflow
+
+ned:dns:
+  stage: test
+  variables:
+    LOG_LEVEL: info
+    NED_AMOUNT_RECORDS: 10
+  script:
+    - ned --type dns
