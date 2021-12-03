@@ -1,5 +1,7 @@
 # NED: The NEtwork Data producer v0.6.0
 
+* This is a push mirror of https://gitlab.com/cossas/dgad
+* For issues/contributions check the [CONTRIBUTING.md](CONTRIBUTING.md)
 * python package to quickly generate large amount of network data for all intents and purposes
 * can push data to elasticsearch
 
