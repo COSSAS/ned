@@ -1,7 +1,7 @@
 include:
   - project: 'just-ci/templates'
-    file: 'templates/python-docker.yml'
-    ref: 'v4.0.1'
+    file: 'templates/container/python.yml'
+    ref: 'v5.2.0'
 
 variables:
   PYTHON_PACKAGE: ned
