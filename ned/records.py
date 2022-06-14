@@ -25,7 +25,7 @@ class NetflowRecord(Record):
 
     def __post_init__(self) -> None:
         self.suricata = copy.deepcopy(suricata_template_netflow)
-        self.suricata["flow_id"] = str(self.flow_id)
+        self.suricata["flow_id"] = self.flow_id
         self.suricata["src_ip"] = self.src_ip
         self.suricata["dest_ip"] = self.dest_ip
         self.suricata["flow"]["start"] = self.timestamp.isoformat()  # type: ignore[index]
@@ -33,12 +33,12 @@ class NetflowRecord(Record):
             self.timestamp + timedelta(seconds=2)
         ).isoformat()
         self.suricata["timestamp"] = self.timestamp.isoformat()
-        self.suricata["flow"]["pkts_toclient"] = str(random.randint(0, 32))  # type: ignore[index]
-        self.suricata["flow"]["pkts_toserver"] = str(random.randint(0, 32))  # type: ignore[index]
-        self.suricata["flow"]["bytes_toclient"] = str(int(self.suricata["flow"]["pkts_toclient"]) * 8)  # type: ignore[index]
-        self.suricata["flow"]["bytes_toserver"] = str(int(self.suricata["flow"]["pkts_toserver"]) * 8)  # type: ignore[index]
-        self.suricata["src_port"] = str(random.randint(0, 32))  # nosec
-        self.suricata["dest_port"] = str(random.randint(0, 32))  # nosec
+        self.suricata["flow"]["pkts_toclient"] = random.randint(0, 32)  # type: ignore[index]
+        self.suricata["flow"]["pkts_toserver"] = random.randint(0, 32)  # type: ignore[index]
+        self.suricata["flow"]["bytes_toclient"] = int(self.suricata["flow"]["pkts_toclient"]) * 8  # type: ignore[index]
+        self.suricata["flow"]["bytes_toserver"] = int(self.suricata["flow"]["pkts_toserver"]) * 8  # type: ignore[index]
+        self.suricata["src_port"] = random.randint(0, 32)  # nosec
+        self.suricata["dest_port"] = random.randint(0, 32)  # nosec
 
 
 @dataclass
@@ -50,11 +50,11 @@ class DNSRecordRequest(Record):
     def __post_init__(self) -> None:
         self.suricata = copy.deepcopy(suricata_dns_template_request)
         self.suricata["timestamp"] = self.timestamp.isoformat()
-        self.suricata["flow_id"] = str(self.flow_id)
+        self.suricata["flow_id"] = self.flow_id
         self.suricata["src_ip"] = self.src_ip
-        self.suricata["src_port"] = str(random.randint(0, 32))  # nosec
+        self.suricata["src_port"] = random.randint(0, 32)  # nosec
         self.suricata["dest_ip"] = "1.1.1.1"
-        self.suricata["dest_port"] = "53"
+        self.suricata["dest_port"] = 53
         self.suricata["dns"]["rrname"] = self.domain_name  # type: ignore[index]
 
 
@@ -67,11 +67,11 @@ class DNSRecordResponse(Record):
     def __post_init__(self) -> None:
         self.suricata = copy.deepcopy(suricata_dns_template_response)
         self.suricata["timestamp"] = self.timestamp.isoformat()
-        self.suricata["flow_id"] = str(self.flow_id)
+        self.suricata["flow_id"] = self.flow_id
         self.suricata["src_ip"] = "1.1.1.1"
-        self.suricata["src_port"] = "53"
+        self.suricata["src_port"] = 53
         self.suricata["dest_ip"] = self.src_ip
-        self.suricata["dest_port"] = str(random.randint(0, 32))  # nosec
+        self.suricata["dest_port"] = random.randint(0, 32)  # nosec
         self.suricata["dns"]["rrname"] = self.domain_name  # type: ignore[index]
         self.suricata["dns"]["answers"][0]["rrname"] = self.domain_name  # type: ignore[index]
         self.suricata["dns"]["answers"][0]["rdata"] = self.domain_name  # type: ignore[index]
