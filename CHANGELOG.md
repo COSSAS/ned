@@ -1,3 +1,10 @@
+## [0.6.1](https://gitlab.com/cossas/ned/compare/v0.6.0...v0.6.1) (2022-06-20)
+
+
+### Bug Fixes
+
+* field type for src_port, dest_port, flow_id, flow.pkts_toserver, flow.pkts_toclient, flow.bytes_toserver, flow.bytes_toclient set to integer ([3925fb2](https://gitlab.com/cossas/ned/commit/3925fb2b016a38cda865b02ac733918c82bf3c59))
+
 # [0.6.0](https://gitlab.com/notno/ned/compare/v0.5.1...v0.6.0) (2021-10-08)
 
 
