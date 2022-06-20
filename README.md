@@ -1,4 +1,4 @@
-# NED: The NEtwork Data producer v0.6.1
+# NED: The NEtwork Data producer v0.6.2
 
 * This is a push mirror of https://gitlab.com/cossas/dgad
 * For issues/contributions check the [CONTRIBUTING.md](CONTRIBUTING.md)
@@ -9,7 +9,7 @@ usage(docker)
 ```
 cp deployment/config-defaults.env deployment/config.env
 nano deployment/config.env
-docker run --env deployment/config.env registry.gitlab.com/notno/ned:v0.6.1 --to-elastic --type netflow
+docker run --env deployment/config.env registry.gitlab.com/notno/ned:v0.6.2 --to-elastic --type netflow
 ```
 
 types & formats:
