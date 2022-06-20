@@ -14,6 +14,9 @@ python:bandit:
 grype:
   allow_failure: true
 
+python:mypy:
+  allow_failure: true
+
 ned:netflows:
   stage: test
   variables:
